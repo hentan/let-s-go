@@ -1,5 +1,12 @@
-package hello
+package main
 
-func Hello() string {
-	return "Hello, v1.1.0"
+import (
+	"fmt"
+	v0 "v0"
+	v1 "v1"
+)
+
+func main() {
+	fmt.Println(v0.Hello())
+	fmt.Println(v1.Hello())
 }
