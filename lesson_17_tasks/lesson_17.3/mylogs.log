@@ -1,2 +1,5 @@
-2024/05/21 23:11:36 url: /hello
-2024/05/21 23:11:41 Неавторизованный доступ: url: /hello header x-my-app-id: my_secret5
+2024/05/23 20:35:10 url: /hello
+2024/05/23 20:35:10 resp: Hello, Go!
+2024/05/23 20:35:14 Неавторизованный доступ: url: /hello header x-my-app-id: my_secret5
+2024/05/23 20:35:16 url: /hello
+2024/05/23 20:35:16 resp: Hello, Go!

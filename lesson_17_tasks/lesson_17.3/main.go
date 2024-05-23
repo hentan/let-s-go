@@ -9,19 +9,18 @@ import (
 
 func main() {
 	mux := http.NewServeMux()
-	mux.HandleFunc("/hello", hello)
 	filePtr, err := os.OpenFile("mylogs.log", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer filePtr.Close()
 	l := log.New(filePtr, "", log.LstdFlags)
-	logHandler := logMiddleware(l)
+	mux.HandleFunc("/hello", hello(l))
 	authHandlerWithLogging := authHandler(l)
 	httpServer := &http.Server{
 		Addr: ":8080",
 		Handler: authHandlerWithLogging(
-			logHandler(mux),
+			logMiddleware(l)(mux),
 		),
 	}
 	if err := httpServer.ListenAndServe(); err != nil {
@@ -29,10 +28,12 @@ func main() {
 	}
 }
 
-func hello(res http.ResponseWriter, req *http.Request) {
-	msg := "Hello, Go!"
-	log.Println("resp:", msg)
-	fmt.Fprint(res, msg)
+func hello(l *log.Logger) http.HandlerFunc {
+	return func(res http.ResponseWriter, req *http.Request) {
+		msg := "Hello, Go!"
+		l.Println("resp:", msg)
+		fmt.Fprint(res, msg)
+	}
 }
 
 func authHandler(l *log.Logger) func(h http.Handler) http.Handler {
